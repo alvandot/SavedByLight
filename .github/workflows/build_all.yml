@@ -75,7 +75,7 @@ jobs:
     - name: Upload kernel artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: ${{ matrix.model }}_KernelSU-Next_v.${{ env.BUILD_KERNEL_VERSION }}_${{ env.TIME }}
+        name: ${{ matrix.model }}_KernelSU-Next_${{ env.BUILD_KERNEL_VERSION }}_${{ env.TIME }}
         path: |
           SavedByLight/*.zip
           SavedByLight/*.tar
@@ -88,15 +88,12 @@ jobs:
         echo "🕒 Build time: ${{ env.BUILD_TIME }}"
 
   release:
-  name: Create Release
-  needs: build
-  runs-on: ubuntu-latest
-  if: github.event.inputs.version != ''
-  permissions:
-    contents: write
-    actions: read
+    name: Create Release
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.event.inputs.version != ''
     
-  steps:
+    steps:
     - name: Set release timestamp
       id: release_time
       run: |
@@ -137,7 +134,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         tag_name: ${{ github.event.inputs.version }}
-        name: SavedByLight v${{ github.event.inputs.version }} - RELEASE
+        name: SavedByLight ${{ github.event.inputs.version }}
         body: |
           # SavedByLight with KernelSU-Next Build ${{ github.event.inputs.version }} - RELEASE
           
@@ -170,7 +167,7 @@ jobs:
         format: html
         disable_web_page_preview: false
         message: |
-          <b>🚀 NEW - SavedByLight Kernel Build Released! 🎉</b>
+          <b>🚀 New SavedByLight Kernel Build Released! 🎉</b>
           
           <b>📋 Kernel Version:</b> <code>${{ github.event.inputs.version }}</code>
           <b>📅 Build Date:</b> <code>${{ env.RELEASE_TIME }}</code>
@@ -191,12 +188,12 @@ jobs:
           
           ⚠️ <b>Flash at your own risk!</b> ⚠️
           
-          <i>File Available on GitHub Releases, File not uploading in Telegram</i>
+          <i>File Available in GitHub Releases, Not upload in Telegram</i>
 
     - name: Release Summary
       run: |
         echo "🎉 Release created successfully!"
-        echo "📝 Release Name: SavedByLight ${{ github.event.inputs.version }}"
+        echo "📝 Release Name: SmurfKernel ${{ github.event.inputs.version }}"
         echo "🏷️ Tag: ${{ github.event.inputs.version }}"
         echo "🕒 Release Time: ${{ env.RELEASE_TIME }}"
         echo "🔗 Release URL: https://github.com/${{ github.repository }}/releases/tag/${{ github.event.inputs.version }}"
