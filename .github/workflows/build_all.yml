@@ -92,6 +92,9 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     if: github.event.inputs.version != ''
+    permissions:
+      contents: write
+      actions: read
     
     steps:
     - name: Set release timestamp
