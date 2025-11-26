@@ -88,12 +88,15 @@ jobs:
         echo "🕒 Build time: ${{ env.BUILD_TIME }}"
 
   release:
-    name: Create Release
-    needs: build
-    runs-on: ubuntu-latest
-    if: github.event.inputs.version != ''
+  name: Create Release
+  needs: build
+  runs-on: ubuntu-latest
+  if: github.event.inputs.version != ''
+  permissions:
+    contents: write
+    actions: read
     
-    steps:
+  steps:
     - name: Set release timestamp
       id: release_time
       run: |
