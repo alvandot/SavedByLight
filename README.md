@@ -44,17 +44,18 @@ git clone https://github.com/papaL3xa/SavedByLight.git
 3. Output will place in FOLDER "SavedByLight"
 4. Flash using TWRP based recovery for
 ```
-SmurfKernel_[device_codename]_v.[kernel_version]_TWRP_KSUN.zip
+SavedByLight_[device_codename]_v.[kernel_version]_TWRP_KSUN.zip
 ```
 6. Flash using ODIN for
 ```
-SmurfKernel_[device_codename]_v.[kernel_version]_ODIN_KSUN.tar
+SavedByLight_[device_codename]_v.[kernel_version]_ODIN_KSUN.tar
 ```
 8. Test it and enjoy!
    
 # Credits
 
 - [`GoRhanHee`](https://github.com/GoRhanHee) for [KernelSources & KSUN](https://github.com/GoRhanHee/exynos9820_samsung_Kernel)
+
 
 
 
