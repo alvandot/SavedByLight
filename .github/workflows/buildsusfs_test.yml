@@ -1,0 +1,72 @@
+name: Kernel Test (SUSFS)
+run-name: 'Test: SavedByLight for ${{ github.event.inputs.MODEL }}_v.${{ github.event.inputs.version }}_KSUN'
+
+on:
+  workflow_dispatch:
+    inputs:
+      MODEL:
+        description: 'Choose Your Device'
+        required: true
+        type: choice
+        default: 'N970F'
+        options:
+          - G970F
+          - G970N
+          - G973F
+          - G973N
+          - G975F
+          - G975N
+          - G977B
+          - G977N
+          - N970F
+          - N971N
+          - N975F
+          - N976B
+          - N976N
+      version:
+        description: 'Kernel Version'
+        required: true
+        default: ''
+
+jobs:
+  build:
+    runs-on: ubuntu-latest 
+
+    steps:
+    - name: Update kernel source
+      uses: actions/checkout@v4       
+
+    - name: Set Time Zone to Asia
+      run: |
+        sudo timedatectl set-timezone "Asia/Singapore"
+
+    - name: Install Environemental package
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y \
+          build-essential git libssl-dev bc flex bison \
+          libncurses5-dev libncurses-dev cpio zip unzip \
+          python3 curl rsync kmod libelf-dev \
+          lz4 tar openssl python3-pip \
+          gcc clang
+        wget http://security.ubuntu.com/ubuntu/pool/universe/n/ncurses/libtinfo5_6.3-2ubuntu0.1_amd64.deb && sudo dpkg -i libtinfo5_6.3-2ubuntu0.1_amd64.deb   
+
+    - name: Set build Environment
+      run: |
+        echo "BUILD_KERNEL_VERSION=${{ github.event.inputs.version }}" >> $GITHUB_ENV
+
+    - name: Kernel build
+      run: |
+        chmod +x buildsusfs.sh
+        echo "📋 Kernel version: ${{ env.BUILD_KERNEL_VERSION }}"
+        
+        # Kirim kedua parameter: model dan version
+        ./buildsusfs.sh -m "${{ github.event.inputs.MODEL }}" -v "${{ env.BUILD_KERNEL_VERSION }}"
+        
+    - name: Upload Artifacts Kernel File
+      uses: actions/upload-artifact@v4
+      with:
+        name: SavedByLight_${{ github.event.inputs.MODEL }}_${{ github.event.inputs.version }}_SUSFS
+        path: |
+          SavedByLight/*.zip  
+          SavedByLight/*.tar
